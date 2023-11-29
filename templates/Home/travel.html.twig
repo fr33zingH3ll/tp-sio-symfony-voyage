@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails {{ travel.name }}{% endblock %}
+
+{% block body %}
+    <div class="container" style="padding: 2%;" >
+        <div class="row" style="padding: 2%;" >
+            <div class="card" style="width: 18rem;">
+                <img src="{{ asset(travel.path) }}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">{{ travel.name }}</h5>
+                    <p class="card-text">{{ travel.city }}</p>
+                    <p class="card-text">{{ travel.country }}</p>
+                    <p class="card-text">{{ travel.date|date('Y.m.d') }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

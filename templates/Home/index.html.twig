@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}home page{% endblock %}
+
+{% block body %}
+    <div class="container" style="padding: 2%;">
+        <div class="row" style="padding: 2%;">
+            {% for travel in travels|slice(0, 2) %}
+                {% include "_partials/__card.html.twig" %}
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

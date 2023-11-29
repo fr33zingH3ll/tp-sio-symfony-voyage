@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}travels page{% endblock %}
+
+{% block body %}
+    <div class="container" style="padding: 2%;">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">city</th>
+                    <th scope="col">country</th>
+                    <th scope="col">note</th>
+                    <th scope="col">date</th>
+                    <!-- Ajoutez d'autres en-têtes de colonne au besoin -->
+                    <th scope="col">Actions</th> <!-- Nouvelle colonne pour les actions -->
+                </tr>
+            </thead>
+            <tbody>
+                {% for travel in travels %}
+                    <tr>
+                        <td>{{ travel.city }}</td>
+                        <td>{{ travel.country }}</td>
+                        <td style="color: {% if travel.note > 10 %}green{% else %}red{% endif %}">
+                            {{ travel.note }}
+                        </td>
+                        <td>{{ travel.date|date('Y.m.d') }}</td>
+                        <!-- Ajoutez d'autres cellules de tableau au besoin -->
+                        <td>
+                            <!-- Ajoutez votre bouton ici -->
+                            <a href="{{ path('app_travel_detail', {id: travel.id }) }}">Details</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

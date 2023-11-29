@@ -1,0 +1,26 @@
+{% extends '@!EasyAdmin/page/content.html.twig' %}
+
+{% block body_wrapper %}
+    <div id="main" class="default-content">
+        {% block main_content %}
+            <div class="admin-content">
+                {% block content_header_wrapper %}
+                    <div class="content-header">
+                        {% block content_header_title %}
+                            <h1>{{ block('content_header_title_text')|striptags|raw }}</h1>
+                        {% endblock %}
+                    </div>
+                {% endblock %}
+
+                {% block content %}
+                    {% block flash_messages %}
+                        {{ parent() }}
+                    {% endblock %}
+
+                    {% block page_content %}
+                    {% endblock %}
+                {% endblock %}
+            </div>
+        {% endblock %}
+    </div>
+{% endblock %}
