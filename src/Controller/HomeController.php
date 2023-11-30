@@ -6,7 +6,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Form\FormFactoryInterface;
+use Doctrine\ORM\EntityManagerInterface;
+use App\Form\NewCommentFormType;
 use App\Form\ContactForm;
+use App\Entity\Comment;
 use App\Service\SendMailService;
 use App\Repository\TravelRepository;
 use App\Repository\UserRepository;
@@ -52,16 +56,35 @@ class HomeController extends AbstractController
 
     
     #[Route("/travel/{id}", name: "app_travel_detail")]
-    public function travelDetail(int $id, TravelRepository $travelRepo): Response
+    public function travelDetail(int $id, TravelRepository $travelRepo, Request $request, FormFactoryInterface $formFactory, EntityManagerInterface $entityManager): Response
     {
-
         $travel = $travelRepo->find($id);
-
+        $comments = $travel->getComments();
+    
+        // Créer une nouvelle instance du formulaire
+        $comment = new Comment();
+        $comment->setTravel($travel);
+        $form = $formFactory->create(NewCommentFormType::class, $comment, ['travel' => $travel->getId()]);
+    
+        // Gérer la soumission du formulaire
+        $form->handleRequest($request);
+    
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Enregistrez le commentaire dans la base de données, en associant le voyage
+            $entityManager->persist($comment);
+            $entityManager->flush();
+    
+            // Rafraîchir la liste des commentaires après l'ajout d'un nouveau commentaire
+            $comments = $travel->getComments();
+        }
+    
         return $this->render('Home/travel.html.twig', [
             'controller' => 'Home Controller',
             'travel' => $travel,
+            'comments' => $comments,
             'path' => 'src/Controller/HomeController.php',
             'message' => 'Welcome to my travel details',
+            'form' => $form->createView(),  // Passer le formulaire à la vue
         ]);
     }
 

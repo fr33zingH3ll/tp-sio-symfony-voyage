@@ -16,4 +16,31 @@
             </div>
         </div>
     </div>
+    <div>
+        {% for comment in comments %}
+            <div>
+                <h3>{{ comment.sender }}</h3>
+                <p>{{ comment.message }}</p>
+            </div>
+        {% endfor %}
+    </div>
+    <div>
+        <h1>New Comment</h1>
+
+        {{ form_start(form) }}
+        
+        <div class="form-group">
+            {{ form_row(form.sender, {'label': 'Enter your mail'}) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_row(form.message, {'label': 'Enter your comment'}) }}
+        </div>
+
+        {# travel field is hidden on the form, so it won't be displayed here #}
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+
+        {{ form_end(form) }}
+    </div>
 {% endblock %}
